@@ -1,5 +1,5 @@
 // package of the main activity
-package com.example.collins.littlehearts;
+package com.example.collins.littlehearts.ui;
 
 //imports
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.collins.littlehearts.R;
 
 //class main activity extending app compat activity
 public class MainActivity extends AppCompatActivity {

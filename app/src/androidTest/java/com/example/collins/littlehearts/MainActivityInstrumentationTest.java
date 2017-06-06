@@ -2,6 +2,8 @@ package com.example.collins.littlehearts;
 
 import android.support.test.rule.ActivityTestRule;
 
+import com.example.collins.littlehearts.ui.MainActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 

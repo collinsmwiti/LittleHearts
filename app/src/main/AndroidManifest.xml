@@ -11,23 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen">
+        <activity android:name=".ui.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
-        <activity android:name=".LoginActivity" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
-        <activity android:name=".MainActivity" android:theme="@style/NoActionBarTheme"></activity>
-        <activity android:name=".PetsActivity">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity">
-        </meta-data>
+        <activity
+            android:name=".ui.SignupActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:theme="@style/NoActionBarTheme" />
+        <activity android:name=".ui.PetsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"></meta-data>
         </activity>
-
+        <activity android:name=".ui.PetDetailActivity"></activity>
     </application>
 
 </manifest>

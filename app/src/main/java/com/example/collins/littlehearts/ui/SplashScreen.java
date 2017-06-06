@@ -1,10 +1,12 @@
 // package
-package com.example.collins.littlehearts;
+package com.example.collins.littlehearts.ui;
 
 //imports
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.collins.littlehearts.R;
 
 /**
  * Created by collins on 5/25/17.
