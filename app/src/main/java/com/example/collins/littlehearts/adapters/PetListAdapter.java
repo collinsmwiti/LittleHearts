@@ -1,6 +1,7 @@
 package com.example.collins.littlehearts.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,10 @@ import android.widget.TextView;
 
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
+import com.example.collins.littlehearts.ui.PetDetailActivity;
 import com.squareup.picasso.Picasso;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -47,7 +51,7 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
         return mPets.size();
     }
 
-    public class PetViewHolder extends RecyclerView.ViewHolder {
+    public class PetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @Bind(R.id.petImageView)
         ImageView mPetImageView;
         @Bind(R.id.petNameTextView)
@@ -61,6 +65,16 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int itemPosition = getLayoutPosition();
+            Intent intent = new Intent(mContext, PetDetailActivity.class);
+            intent.putExtra("position", itemPosition);
+            intent.putExtra("pets", Parcels.wrap(mPets));
+            mContext.startActivity(intent);
         }
 
         public void bindPet(Pet pet) {

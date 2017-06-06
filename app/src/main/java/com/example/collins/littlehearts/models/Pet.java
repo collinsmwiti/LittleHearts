@@ -3,6 +3,8 @@ package com.example.collins.littlehearts.models;
 
 //imports
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 
 /**
@@ -10,6 +12,7 @@ import java.util.ArrayList;
  */
 
 //class pet
+@Parcel
 public class Pet {
     ArrayList<String> mImageUrls;
     String mId;
@@ -25,6 +28,9 @@ public class Pet {
     String mPhone;
     String mAddress;
 
+//    empty constructor for parcelar and firebase
+
+    public Pet() {}
     //constructor pet
     public Pet(ArrayList<String> imageUrls, String id, ArrayList<String> breeds, String sex, String description, String mix, String animal, String age, String size, ArrayList<String> options, String lastUpdate, String phone, String address) {
         this.mImageUrls = imageUrls;
