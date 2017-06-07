@@ -14,7 +14,7 @@ import java.util.ArrayList;
 //class pet
 @Parcel
 public class Pet {
-    ArrayList<String> mImageUrls;
+    String mImageUrl;
     String mId;
     ArrayList<String> mBreeds;
     String mSex;
@@ -26,14 +26,17 @@ public class Pet {
     ArrayList<String> mOptions;
     String lastUpdate;
     String mPhone;
-    String mAddress;
+    String mEmail;
+
 
 //    empty constructor for parcelar and firebase
 
-    public Pet() {}
+    public Pet() {
+    }
+
     //constructor pet
-    public Pet(ArrayList<String> imageUrls, String id, ArrayList<String> breeds, String sex, String description, String mix, String animal, String age, String size, ArrayList<String> options, String lastUpdate, String phone, String address) {
-        this.mImageUrls = imageUrls;
+    public Pet(String imageUrl, String id, ArrayList<String> breeds, String sex, String description, String mix, String animal, String age, String size, ArrayList<String> options, String lastUpdate, String phone, String email) {
+        mImageUrl = imageUrl;
         this.mId = id;
         this.mBreeds = breeds;
         this.mSex = sex;
@@ -45,13 +48,14 @@ public class Pet {
         this.mOptions = options;
         this.lastUpdate = lastUpdate;
         this.mPhone = phone;
-        this.mAddress = address;
+        this.mEmail = email;
+
     }
 
-        //getter methods
+    //getter methods
 
-    public ArrayList<String> getImageUrls() {
-        return mImageUrls;
+    public String getImageUrl() {
+        return mImageUrl;
     }
 
     public String getId() {
@@ -98,10 +102,12 @@ public class Pet {
         return mPhone;
     }
 
-    public String getAddress() {
-        return mAddress;
+    public String getEmail() {
+        return mEmail;
     }
+
 }
+
 
 
 

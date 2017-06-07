@@ -1,6 +1,8 @@
 package com.example.collins.littlehearts.ui;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,16 +23,15 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PetDetailFragment extends Fragment {
+public class PetDetailFragment extends Fragment implements View.OnClickListener {
     @Bind(R.id.petImageView)
     ImageView mImageLabel;
     @Bind(R.id.petNameTextView)
     TextView mNameLabel;
     @Bind(R.id.animalTextView) TextView mAnimalLabel;
     @Bind(R.id.lastUpdatedTextView) TextView mLastUpdatedLabel;
-    @Bind(R.id.websiteTextView) TextView mWebsiteLabel;
     @Bind(R.id.phoneTextView) TextView mPhoneLabel;
-    @Bind(R.id.addressTextView) TextView mAddressLabel;
+    @Bind(R.id.emailTextView) TextView mEmailLabel;
     @Bind(R.id.savePetButton) TextView mSavePetButton;
 
     private Pet mPet;
@@ -56,14 +57,34 @@ public class PetDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pet_detail, container, false);
         ButterKnife.bind(this, view);
 
-        Picasso.with(view.getContext()).load(mPet.getImageUrls().get(0)).into(mImageLabel);
+        Picasso.with(view.getContext())
+                .load(mPet.getImageUrl())
+                .into(mImageLabel);
 
         mNameLabel.setText(mPet.getBreeds().get(0));
         mAnimalLabel.setText(mPet.getAge());
         mLastUpdatedLabel.setText("LastUpdated: " + mPet.getLastUpdate());
-        mPhoneLabel.setText(mPet.getPhone());
-        mAddressLabel.setText(mPet.getAddress());
+        mPhoneLabel.setOnClickListener(this);
+        mEmailLabel.setOnClickListener(this);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == mPhoneLabel) {
+            Intent phoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mPet.getPhone()));
+            startActivity(phoneIntent);
+        }
+
+        if (v == mEmailLabel) {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto","haventohome@gmail.com", null));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
+            startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        }
+
     }
 
 }

@@ -65,12 +65,16 @@ public class PetFinderService {
 
                 for (int i = 0; i < petJSON.length(); i++) {
                     //arraylist for urls
-                    ArrayList<String> imageUrls = new ArrayList<>();
+//                    ArrayList<String> imageUrls = new ArrayList<>();
+//
+//                    JSONArray imageUrlsJSON = petJSON.getJSONObject(i).getJSONObject("media").getJSONObject("photos").getJSONArray("photo");
+//                    for (int y = 0; y < imageUrlsJSON.length(); y++) {
+//                        imageUrls.add(imageUrlsJSON.getJSONObject(y).optString("$t").toString());
 
-                    JSONArray imageUrlsJSON = petJSON.getJSONObject(i).getJSONObject("media").getJSONObject("photos").getJSONArray("photo");
-                    for (int y = 0; y < imageUrlsJSON.length(); y++) {
-                        imageUrls.add(imageUrlsJSON.getJSONObject(y).optString("$t").toString());
-                    }
+//                    }
+                    //string imageurl
+                    String imageUrl = petJSON.getJSONObject(i).getJSONObject("media").getJSONObject("photos").getJSONArray("photo")
+                            .getJSONObject(2).optString("$t");
                     //display id
                     String id = petJSON.getJSONObject(i).getJSONObject("id").optString("$t");
                     //arraylists for breeds
@@ -105,9 +109,9 @@ public class PetFinderService {
                     //display lastupdate
                     String lastUpdate = petJSON.getJSONObject(i).getJSONObject("lastUpdate").optString("$t");
                     String phone = petJSON.getJSONObject(i).getJSONObject("contact").getJSONObject("phone").optString("$t", "No phone found");
-                    String address = petJSON.getJSONObject(i).getJSONObject("contact").getJSONObject("address1").optString("$t");
+                    String email = petJSON.getJSONObject(i).getJSONObject("contact").getJSONObject("email").optString("$t");
 
-                    Pet pet = new Pet(imageUrls, id, breeds, sex, description, mix, animal, age, size, options, lastUpdate, phone, address);
+                    Pet pet = new Pet(imageUrl, id, breeds, sex, description, mix, animal, age, size, options, lastUpdate, phone, email);
                     pets.add(pet);
                 }
 

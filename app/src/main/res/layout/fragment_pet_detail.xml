@@ -75,20 +75,7 @@
                 android:paddingTop="20dp"
                 android:paddingRight="30dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="View on PetFinder"
-                    android:id="@+id/websiteTextView"
-                    android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
-                    android:drawablePadding="4dp"
-                    android:textColor="@color/colorTextIcons"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center" />
-
-                <TextView
+                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="310-278-2935"
@@ -104,10 +91,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="351 North Foothill Rd. (Mailing only)"
-                    android:drawableLeft="@drawable/ic_map_black_24dp"
+                    android:text="haventohome@gmail.com"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
                     android:drawablePadding="4dp"
-                    android:id="@+id/addressTextView"
+                    android:id="@+id/emailTextView"
                     android:textColor="@color/colorTextIcons"
                     android:textSize="15sp"
                     android:textStyle="bold"
