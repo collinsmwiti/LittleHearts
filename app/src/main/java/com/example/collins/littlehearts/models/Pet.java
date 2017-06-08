@@ -12,21 +12,22 @@ import java.util.ArrayList;
  */
 
 //class pet
+    //used POJO to adhere to java rules
 @Parcel
 public class Pet {
-    String mImageUrl;
-    String mId;
-    ArrayList<String> mBreeds;
-    String mSex;
-    String mDescription;
-    String mMix;
-    String mAnimal;
-    String mAge;
-    String mSize;
-    ArrayList<String> mOptions;
+    String imageUrl;
+    String id;
+    ArrayList<String> breeds;
+    String sex;
+    String description;
+    String mix;
+    String animal;
+    String age;
+    String size;
+    ArrayList<String> options;
     String lastUpdate;
-    String mPhone;
-    String mEmail;
+    String phone;
+    String email;
 
 
 //    empty constructor for parcelar and firebase
@@ -36,62 +37,62 @@ public class Pet {
 
     //constructor pet
     public Pet(String imageUrl, String id, ArrayList<String> breeds, String sex, String description, String mix, String animal, String age, String size, ArrayList<String> options, String lastUpdate, String phone, String email) {
-        mImageUrl = imageUrl;
-        this.mId = id;
-        this.mBreeds = breeds;
-        this.mSex = sex;
-        this.mDescription = description;
-        this.mMix = mix;
-        this.mAnimal = animal;
-        this.mAge = age;
-        this.mSize = size;
-        this.mOptions = options;
+        this.imageUrl = imageUrl;
+        this.id = id;
+        this.breeds = breeds;
+        this.sex = sex;
+        this.description = description;
+        this.mix = mix;
+        this.animal = animal;
+        this.age = age;
+        this.size = size;
+        this.options = options;
         this.lastUpdate = lastUpdate;
-        this.mPhone = phone;
-        this.mEmail = email;
+        this.phone = phone;
+        this.email = email;
 
     }
 
     //getter methods
 
     public String getImageUrl() {
-        return mImageUrl;
+        return imageUrl;
     }
 
     public String getId() {
-        return mId;
+        return id;
     }
 
     public ArrayList<String> getBreeds() {
-        return mBreeds;
+        return breeds;
     }
 
     public String getSex() {
-        return mSex;
+        return sex;
     }
 
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     public String getMix() {
-        return mMix;
+        return mix;
     }
 
     public String getAnimal() {
-        return mAnimal;
+        return animal;
     }
 
     public String getAge() {
-        return mAge;
+        return age;
     }
 
     public String getSize() {
-        return mSize;
+        return size;
     }
 
     public ArrayList<String> getOptions() {
-        return mOptions;
+        return options;
     }
 
     public String getLastUpdate() {
@@ -99,11 +100,11 @@ public class Pet {
     }
 
     public String getPhone() {
-        return mPhone;
+        return phone;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
 }

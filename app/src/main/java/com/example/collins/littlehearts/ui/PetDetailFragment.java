@@ -10,9 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -66,6 +70,10 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
         mLastUpdatedLabel.setText("LastUpdated: " + mPet.getLastUpdate());
         mPhoneLabel.setOnClickListener(this);
         mEmailLabel.setOnClickListener(this);
+
+        //adding a listener to save pets button in order for the users to save their pets
+        mSavePetButton.setOnClickListener(this);
+
         return view;
     }
 
@@ -83,6 +91,14 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
             startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        }
+
+        if (v == mSavePetButton) {
+            DatabaseReference petRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference(Constants.FIREBASE_CHILD_PETS);
+            petRef.push().setValue(mPet);
+            Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
         }
 
     }
