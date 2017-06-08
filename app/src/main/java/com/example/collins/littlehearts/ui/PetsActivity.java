@@ -4,11 +4,15 @@ package com.example.collins.littlehearts.ui;
 //imports
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
+import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.adapters.PetListAdapter;
 import com.example.collins.littlehearts.models.Pet;
@@ -25,6 +29,8 @@ import okhttp3.Response;
 
 //class PetsActivity extending appcompat activity
 public class PetsActivity extends AppCompatActivity {
+    private SharedPreferences mSharedPreferences;
+    private String mRecentAddress;
     public static final String TAG = PetsActivity.class.getSimpleName();
 
 //    @Bind(R.id.locationTextView) TextView mLocationTextView;
@@ -46,6 +52,10 @@ public class PetsActivity extends AppCompatActivity {
         String location = intent.getStringExtra("location");
 //        mLocationTextView.setText("Here are all the pets to adopt near: " + location);
         getPets(location);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
+        Log.d("Shared Pref Location", mRecentAddress);
     }
 
     private void getPets(String location) {
