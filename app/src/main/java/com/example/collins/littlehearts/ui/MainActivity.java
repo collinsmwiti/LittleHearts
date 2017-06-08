@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private DatabaseReference mSearchedLocationReference;
 
+    private ValueEventListener mSearchedLocationReferenceListener;
+
     @Bind(R.id.locationEditText) EditText mLocationEditText;
     @Bind(R.id.adoptPetsButton) Button mAdoptPetsButton;
     @Bind(R.id.appNameTextView) TextView mAppNameTextView;
@@ -51,6 +53,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .getInstance()
                 .getReference()
                 .child(Constants.FIREBASE_CHILD_SEARCHED_LOCATION); //pinpoint location node
+
+        // remove value event listener to prevent loss of battery power in phones especially when one quits an app
+        mSearchedLocationReferenceListener = mSearchedLocationReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot locationSnapshot : dataSnapshot.getChildren()) {
+                    String location = locationSnapshot.getValue().toString();
+                    Log.d("Locations updated", "location:" + location);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         mSearchedLocationReference.addValueEventListener(new ValueEventListener() { //attach listener
             @Override
@@ -97,6 +115,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void saveLocationToFirebase(String location) {
         mSearchedLocationReference.push().setValue(location);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSearchedLocationReference.removeEventListener(mSearchedLocationReferenceListener);
     }
 
 //    private void addToSharedPreferences(String location) {
