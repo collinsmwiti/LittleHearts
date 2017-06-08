@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if (v == madoptPetsButton) {
                     String location = mLocationEditText.getText().toString();
-                    addToSharedPreferences(location);
+                    if (!(location).equals("")) {
+                        addToSharedPreferences(location);
+                }
                     Intent intent = new Intent(MainActivity.this, PetsActivity.class);
                     intent.putExtra("location", location);
                     startActivity(intent);
