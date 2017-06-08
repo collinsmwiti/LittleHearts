@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "222582675288",
+    "firebase_url": "https://little-hearts-24e47.firebaseio.com",
+    "project_id": "little-hearts-24e47",
+    "storage_bucket": "little-hearts-24e47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222582675288:android:c963ca8d39f27ac0",
+        "android_client_info": {
+          "package_name": "com.example.collins.littlehearts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222582675288-ib196l08im47d58hbcpc01bdpi2a0kf6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.collins.littlehearts",
+            "certificate_hash": "22ae6ae02cbc77ea317a2361a931ec8828d59eb4"
+          }
+        },
+        {
+          "client_id": "222582675288-080eba8phiuepgs86bph36h0c5u49jdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyix0qGsDgC-4k-YQKtikv6sQLhsDK1zs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222582675288-080eba8phiuepgs86bph36h0c5u49jdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
