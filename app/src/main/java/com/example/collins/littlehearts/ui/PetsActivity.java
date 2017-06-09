@@ -4,11 +4,19 @@ package com.example.collins.littlehearts.ui;
 //imports
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.adapters.PetListAdapter;
 import com.example.collins.littlehearts.models.Pet;
@@ -25,14 +33,15 @@ import okhttp3.Response;
 
 //class PetsActivity extending appcompat activity
 public class PetsActivity extends AppCompatActivity {
-//    private SharedPreferences mSharedPreferences;
-//    private String mRecentAddress;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
+    private String mRecentAddress;
 //    public static final String TAG = PetsActivity.class.getSimpleName();
 
 //    @Bind(R.id.locationTextView) TextView mLocationTextView;
 //    @Bind(R.id.listView) ListView mListView;
-    @Bind(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    @Bind(R.id.recyclerView)RecyclerView mRecyclerView;
+
     private PetListAdapter mAdapter;
 
     public ArrayList<Pet> mPets = new ArrayList<>();
@@ -49,12 +58,12 @@ public class PetsActivity extends AppCompatActivity {
 //        mLocationTextView.setText("Here are all the pets to adopt near: " + location);
         getPets(location);
 
-//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
 ////        Log.d("Shared Pref Location", mRecentAddress);
-//        if (mRecentAddress != null) {
-//            getPets(mRecentAddress);
-//        }
+        if (mRecentAddress != null) {
+            getPets(mRecentAddress);
+        }
     }
 
     private void getPets(String location) {
@@ -103,5 +112,45 @@ public class PetsActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    //retrieving data from sharedpreferences
+    private void addToSharedPreferences(String location) {
+        mEditor.putString(Constants.PREFERENCES_LOCATION_KEY, location).apply();
+    }
+
+    //stashing data from shared preferences
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        ButterKnife.bind(this);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mSharedPreferences.edit();
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        //adding a searchview listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                addToSharedPreferences(query);
+                getPets(query);
+                return  false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return  true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }
