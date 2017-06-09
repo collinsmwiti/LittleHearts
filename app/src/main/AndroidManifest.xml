@@ -25,9 +25,9 @@
             android:name=".ui.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/NoActionBarTheme" />
-        <activity android:name=".ui.PetsActivity">
+            android:name=".ui.MainActivity"/>
+        <activity
+            android:name=".ui.PetsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
