@@ -88,12 +88,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         final String email = _emailText.getText().toString().trim();
         String password = _passwordText.getText().toString().trim();
 
+        boolean validateUser = validate();
+        if(!validateUser) return;
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Authentication successful");
+
                         } else {
                             Toast.makeText(SignupActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
@@ -114,7 +118,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.Theme_AppCompat_Light_DarkActionBar);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage("Authenticating with Firebase...");
         progressDialog.show();
 
 //        String name = _nameText.getText().toString();
@@ -132,7 +136,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         // onSignupFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 1000);
     }
 
 
