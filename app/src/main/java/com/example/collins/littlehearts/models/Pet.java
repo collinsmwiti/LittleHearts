@@ -28,7 +28,7 @@ public class Pet {
     String lastUpdate;
     String phone;
     String email;
-
+    private String pushId;
 
 //    empty constructor for parcelar and firebase
 
@@ -105,6 +105,14 @@ public class Pet {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
 }

@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -94,10 +96,21 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
         }
 
         if (v == mSavePetButton) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = user.getUid();
+
             DatabaseReference petRef = FirebaseDatabase
                     .getInstance()
-                    .getReference(Constants.FIREBASE_CHILD_PETS);
-            petRef.push().setValue(mPet);
+                    .getReference(Constants.FIREBASE_CHILD_PETS)
+                    .child(uid);
+
+//            petRef.push().setValue(mPet);
+
+            DatabaseReference pushRef = petRef.push();
+            String pushId = pushRef.getKey();
+            mPet.setPushId(pushId);
+            pushRef.setValue(mPet);
+
             Toast.makeText(getContext(), "saved", Toast.LENGTH_SHORT).show();
         }
 

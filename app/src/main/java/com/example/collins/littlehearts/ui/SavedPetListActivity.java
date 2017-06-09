@@ -10,6 +10,8 @@ import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.adapters.FirebasePetViewHolder;
 import com.example.collins.littlehearts.models.Pet;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -32,6 +34,17 @@ public class SavedPetListActivity extends AppCompatActivity {
         //the content will be held at activity_pets xml
         setContentView(R.layout.activity_pets);
         ButterKnife.bind(this);
+
+        //to enable each and every user save his/her pet
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        mPetReference = FirebaseDatabase
+                .getInstance()
+                .getReference(Constants.FIREBASE_CHILD_PETS)
+                .child(uid);
+
+        setUpFirebaseAdapter();
 
         mPetReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_PETS);
         setUpFirebaseAdapter();
