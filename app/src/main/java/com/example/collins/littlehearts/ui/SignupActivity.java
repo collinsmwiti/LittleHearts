@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +31,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private static final String TAG = SignupActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private String mName;
 
     @Bind(R.id.input_name) EditText _nameText;
     @Bind(R.id.input_email) EditText _emailText;
@@ -83,10 +85,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    //create new user
     private void createNewUser() {
-        final String name = _nameText.getText().toString().trim();
+
+        mName = _nameText.getText().toString().trim();
         final String email = _emailText.getText().toString().trim();
         String password = _passwordText.getText().toString().trim();
+
+        boolean validateName = validate();
+        if(!validateName) return;
 
         boolean validateUser = validate();
         if(!validateUser) return;
@@ -97,11 +104,32 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Authentication successful");
+                            createFirebaseUserProfile(task.getResult().getUser());
 
                         } else {
                             Toast.makeText(SignupActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
+                });
+    }
+
+    //greet user by name
+    private void createFirebaseUserProfile(final FirebaseUser user) {
+
+        UserProfileChangeRequest addProfileName = new UserProfileChangeRequest.Builder()
+                .setDisplayName(mName)
+                .build();
+
+        user.updateProfile(addProfileName)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, user.getDisplayName());
+                        }
+                    }
+
                 });
     }
 
