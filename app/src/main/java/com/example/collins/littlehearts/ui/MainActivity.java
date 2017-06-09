@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.locationEditText) EditText mLocationEditText;
     @Bind(R.id.adoptPetsButton) Button mAdoptPetsButton;
     @Bind(R.id.appNameTextView) TextView mAppNameTextView;
+    @Bind(R.id.savedPetsButton) Button mSavedPetsButton;
 
 //    private Button madoptPetsButton;
 //    private EditText mLocationEditText;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        mSavedPetsButton.setOnClickListener(this);
 
         mSearchedLocationReference = FirebaseDatabase
                 .getInstance()
@@ -109,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                }
                     Intent intent = new Intent(MainActivity.this, PetsActivity.class);
                     intent.putExtra("location", location);
+                    startActivity(intent);
+                }
+
+                if (v == mSavedPetsButton) {
+                    Intent intent = new Intent(MainActivity.this, SavedPetListActivity.class);
                     startActivity(intent);
                 }
             }

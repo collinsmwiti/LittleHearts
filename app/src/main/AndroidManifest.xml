@@ -30,9 +30,10 @@
         <activity android:name=".ui.PetsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity"></meta-data>
+                android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.PetDetailActivity"></activity>
+        <activity android:name=".ui.PetDetailActivity" />
+        <activity android:name=".ui.SavedPetListActivity"></activity>
     </application>
 
 </manifest>
