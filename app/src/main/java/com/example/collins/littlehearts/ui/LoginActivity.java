@@ -6,6 +6,7 @@ package com.example.collins.littlehearts.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,13 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.collins.littlehearts.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 // class login activity extending appcompat activity
-public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_SIGNUP = 0;
 
     @Bind(R.id.input_email) EditText _emailText;
@@ -29,25 +35,40 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.btn_login) Button _loginButton;
     @Bind(R.id.link_signup) TextView _signupLink;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
-
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View v) {
-                login();
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
             }
-        });
+        };
 
-        _signupLink.setOnClickListener(new View.OnClickListener() {
+        _loginButton.setOnClickListener(this);
 
+        _signupLink.setOnClickListener(this);
+
+        }
             @Override
             public void onClick(View view) {
+                if (view == _loginButton) {
+                    login();
+                }
+
                 // Start the Signup activity
                 if (view == _signupLink) {
                     Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
@@ -56,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        });
-    }
+
 
     // used to check if the user has logged in successfully by placing his/her details. If not, it alerts the user to correct his details
     public void login() {
@@ -89,7 +109,18 @@ public class LoginActivity extends AppCompatActivity {
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 1000);
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "signInWithEmail", task.getException());
+                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -143,5 +174,19 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }
