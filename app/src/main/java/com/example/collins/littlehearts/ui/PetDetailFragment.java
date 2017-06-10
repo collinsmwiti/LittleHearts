@@ -30,10 +30,8 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class PetDetailFragment extends Fragment implements View.OnClickListener {
-    @Bind(R.id.petImageView)
-    ImageView mImageLabel;
-    @Bind(R.id.petNameTextView)
-    TextView mNameLabel;
+    @Bind(R.id.petImageView) ImageView mImageLabel;
+    @Bind(R.id.petNameTextView) TextView mNameLabel;
     @Bind(R.id.animalTextView) TextView mAnimalLabel;
     @Bind(R.id.lastUpdatedTextView) TextView mLastUpdatedLabel;
     @Bind(R.id.phoneTextView) TextView mPhoneLabel;

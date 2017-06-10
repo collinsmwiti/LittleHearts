@@ -46,8 +46,8 @@ public class SavedPetListActivity extends AppCompatActivity {
 
         setUpFirebaseAdapter();
 
-        mPetReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_PETS);
-        setUpFirebaseAdapter();
+//        mPetReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_PETS);
+//        setUpFirebaseAdapter();
     }
 
     private void setUpFirebaseAdapter() {

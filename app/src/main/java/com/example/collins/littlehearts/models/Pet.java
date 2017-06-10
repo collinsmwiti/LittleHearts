@@ -6,6 +6,7 @@ package com.example.collins.littlehearts.models;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by collins on 6/2/17.
@@ -17,14 +18,14 @@ import java.util.ArrayList;
 public class Pet {
     String imageUrl;
     String id;
-    ArrayList<String> breeds;
+    List<String> breeds = new ArrayList<>();
     String sex;
     String description;
     String mix;
     String animal;
     String age;
     String size;
-    ArrayList<String> options;
+    List<String> options = new ArrayList<>();
     String lastUpdate;
     String phone;
     String email;
@@ -63,7 +64,7 @@ public class Pet {
         return id;
     }
 
-    public ArrayList<String> getBreeds() {
+    public List<String> getBreeds() {
         return breeds;
     }
 
@@ -91,7 +92,7 @@ public class Pet {
         return size;
     }
 
-    public ArrayList<String> getOptions() {
+    public List<String> getOptions() {
         return options;
     }
 
