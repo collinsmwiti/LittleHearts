@@ -50,7 +50,7 @@ public class FirebasePetViewHolder extends RecyclerView.ViewHolder implements Vi
                 .load(pet.getImageUrl())
                 .into(petImageView);
 
-        nameTextView.setText(pet.getBreeds().get(0));
+        nameTextView.setText(android.text.TextUtils.join(", ", pet.getBreeds()));
         animalTextView.setText(pet.getAge());
         lastUpdatedTextView.setText("LastUpdated: " + pet.getLastUpdate());
     }
