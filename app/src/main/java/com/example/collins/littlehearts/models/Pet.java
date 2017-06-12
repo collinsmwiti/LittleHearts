@@ -18,7 +18,7 @@ import java.util.List;
 public class Pet {
     String imageUrl;
     String id;
-    List<String> breeds = new ArrayList<>();
+    List<String> breeds;
     String sex;
     String description;
     String mix;

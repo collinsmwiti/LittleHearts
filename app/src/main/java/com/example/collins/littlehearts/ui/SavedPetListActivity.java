@@ -51,7 +51,9 @@ public class SavedPetListActivity extends AppCompatActivity {
     }
 
     private void setUpFirebaseAdapter() {
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Pet, FirebasePetViewHolder>(Pet.class, R.layout.pet_list_item, FirebasePetViewHolder.class, mPetReference) {
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<Pet, FirebasePetViewHolder>
+                (Pet.class, R.layout.pet_list_item, FirebasePetViewHolder.class,
+                        mPetReference) {
 
             @Override
             protected void populateViewHolder(FirebasePetViewHolder viewHolder, Pet model, int position) {

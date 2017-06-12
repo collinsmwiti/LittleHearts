@@ -65,7 +65,7 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
                 .load(mPet.getImageUrl())
                 .into(mImageLabel);
 
-        mNameLabel.setText(android.text.TextUtils.join(", ", mPet.getBreeds()));
+        mNameLabel.setText(mPet.getBreeds().get(0));
         mAnimalLabel.setText(mPet.getAge());
         mLastUpdatedLabel.setText("LastUpdated: " + mPet.getLastUpdate());
         mPhoneLabel.setOnClickListener(this);
