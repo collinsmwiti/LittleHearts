@@ -3,7 +3,6 @@ package com.example.collins.littlehearts.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,13 +64,14 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
         public PetViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            Log.d("click listener", "working!");
+//            Log.d("click listener", "working!");
             int itemPosition = getLayoutPosition();
             Intent intent = new Intent(mContext, PetDetailActivity.class);
             intent.putExtra("position", itemPosition + "");

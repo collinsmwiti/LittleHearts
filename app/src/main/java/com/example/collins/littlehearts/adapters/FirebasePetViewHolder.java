@@ -31,6 +31,7 @@ public class FirebasePetViewHolder extends RecyclerView.ViewHolder implements Vi
     View mView;
     Context mContext;
 
+
     //constructor firebasepetviewholder
     public FirebasePetViewHolder(View itemView) {
         super(itemView);
@@ -50,11 +51,9 @@ public class FirebasePetViewHolder extends RecyclerView.ViewHolder implements Vi
                 .load(pet.getImageUrl())
                 .into(petImageView);
 
-        try {
             nameTextView.setText(pet.getBreeds().get(0));
             animalTextView.setText(pet.getAge());
             lastUpdatedTextView.setText("LastUpdated: " + pet.getLastUpdate());
-        } catch (NullPointerException ex) { }
     }
 
     @Override

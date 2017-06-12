@@ -28,7 +28,8 @@ public class PetDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mPets = Parcels.unwrap(getIntent().getParcelableExtra("pets"));
-        int startingPosition = getIntent().getIntExtra("position", 0);
+
+        int startingPosition = Integer.parseInt(getIntent().getStringExtra("position"));
 
         adapterViewPager = new PetPagerAdapter(getSupportFragmentManager(), mPets);
         mViewPager.setAdapter(adapterViewPager);
