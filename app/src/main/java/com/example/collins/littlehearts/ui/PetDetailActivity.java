@@ -29,7 +29,7 @@ public class PetDetailActivity extends AppCompatActivity {
 
         mPets = Parcels.unwrap(getIntent().getParcelableExtra("pets"));
 
-        int startingPosition = Integer.parseInt(getIntent().getStringExtra("position"));
+        int startingPosition = getIntent().getIntExtra("position", 0);
 
         adapterViewPager = new PetPagerAdapter(getSupportFragmentManager(), mPets);
         mViewPager.setAdapter(adapterViewPager);

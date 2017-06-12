@@ -30,6 +30,7 @@ public class Pet {
     String phone;
     String email;
     private String pushId;
+    String index;
 
 //    empty constructor for parcelar and firebase
 
@@ -51,6 +52,7 @@ public class Pet {
         this.lastUpdate = lastUpdate;
         this.phone = phone;
         this.email = email;
+        this.index = "not_specified";
 
     }
 
@@ -114,6 +116,14 @@ public class Pet {
 
     public void setPushId(String pushId) {
         this.pushId = pushId;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 
 }
