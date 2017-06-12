@@ -4,11 +4,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
+import com.example.collins.littlehearts.adapters.FirebasePetListAdapter;
 import com.example.collins.littlehearts.adapters.FirebasePetViewHolder;
 import com.example.collins.littlehearts.models.Pet;
+import com.example.collins.littlehearts.util.ItemTouchHelperAdapter;
+import com.example.collins.littlehearts.util.OnStartDragListener;
+import com.example.collins.littlehearts.util.SimpleItemTouchHelperCallback;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,10 +24,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 //class saved restaurant list activity
-public class SavedPetListActivity extends AppCompatActivity {
+public class SavedPetListActivity extends AppCompatActivity implements OnStartDragListener{
 
     private DatabaseReference mPetReference;
     private FirebaseRecyclerAdapter mFirebaseAdapter;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -35,14 +41,14 @@ public class SavedPetListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pets);
         ButterKnife.bind(this);
 
-        //to enable each and every user save his/her pet
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-
-        mPetReference = FirebaseDatabase
-                .getInstance()
-                .getReference(Constants.FIREBASE_CHILD_PETS)
-                .child(uid);
+//        //to enable each and every user save his/her pet
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        String uid = user.getUid();
+//
+//        mPetReference = FirebaseDatabase
+//                .getInstance()
+//                .getReference(Constants.FIREBASE_CHILD_PETS)
+//                .child(uid);
 
         setUpFirebaseAdapter();
 
@@ -51,23 +57,34 @@ public class SavedPetListActivity extends AppCompatActivity {
     }
 
     private void setUpFirebaseAdapter() {
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Pet, FirebasePetViewHolder>
-                (Pet.class, R.layout.pet_list_item_drag, FirebasePetViewHolder.class,
-                        mPetReference) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
 
-            @Override
-            protected void populateViewHolder(FirebasePetViewHolder viewHolder, Pet model, int position) {
-                viewHolder.bindPet(model);
-            }
-        };
+        mPetReference = FirebaseDatabase
+                .getInstance()
+                .getReference(Constants.FIREBASE_CHILD_PETS)
+                .child(uid);
+
+        mFirebaseAdapter = new FirebasePetListAdapter(Pet.class,
+                R.layout.pet_list_item_drag, FirebasePetViewHolder.class,
+                mPetReference, this, this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mFirebaseAdapter);
-    }
 
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback((ItemTouchHelperAdapter) mFirebaseAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mFirebaseAdapter.cleanup();
     }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
 }
+

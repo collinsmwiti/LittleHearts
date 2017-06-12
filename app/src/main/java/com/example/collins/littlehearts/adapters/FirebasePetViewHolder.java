@@ -22,6 +22,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import static com.example.collins.littlehearts.R.id.petImageView;
+
 /**
  * Created by collins on 6/8/17.
  */
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 public class FirebasePetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     View mView;
     Context mContext;
+    public ImageView mPetImageView;
 
 
     //constructor firebasepetviewholder
@@ -42,14 +45,14 @@ public class FirebasePetViewHolder extends RecyclerView.ViewHolder implements Vi
 
     //inorder to display the saved contents to the user
     public void bindPet(Pet pet) {
-        ImageView petImageView = (ImageView) mView.findViewById(R.id.petImageView);
+        mPetImageView = (ImageView) mView.findViewById(petImageView);
         TextView nameTextView = (TextView) mView.findViewById(R.id.petNameTextView);
         TextView animalTextView = (TextView) mView.findViewById(R.id.animalTextView);
         TextView lastUpdatedTextView = (TextView) mView.findViewById(R.id.lastUpdatedTextView);
 
         Picasso.with(mContext)
                 .load(pet.getImageUrl())
-                .into(petImageView);
+                .into(mPetImageView);
 
             nameTextView.setText(pet.getBreeds().get(0));
             animalTextView.setText(pet.getAge());
