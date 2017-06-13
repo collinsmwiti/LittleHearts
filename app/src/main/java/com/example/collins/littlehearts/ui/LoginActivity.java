@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        _loginButton.setOnClickListener(this);
+
+        _signupLink.setOnClickListener(this);
+
         mAuth = FirebaseAuth.getInstance();
+        createAuthProgressDialog();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -58,12 +65,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         };
 
-        _loginButton.setOnClickListener(this);
-
-        _signupLink.setOnClickListener(this);
 
         }
-            @Override
+
+    private void createAuthProgressDialog() {
+        progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.Theme_AppCompat_Light_DarkActionBar);
+//        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.setCancelable(false);
+    }
+
+    @Override
             public void onClick(View view) {
                 if (view == _loginButton) {
                     login();
@@ -90,12 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.Theme_AppCompat_Light_DarkActionBar);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
         progressDialog.show();
-
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
