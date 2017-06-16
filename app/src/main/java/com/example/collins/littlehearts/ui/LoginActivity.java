@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void createAuthProgressDialog() {
         progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.Theme_AppCompat_Light_DarkActionBar);
-//        progressDialog.setIndeterminate(true);
+        progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.setCancelable(false);
     }

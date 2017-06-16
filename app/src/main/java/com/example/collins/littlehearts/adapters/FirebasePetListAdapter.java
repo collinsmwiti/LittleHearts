@@ -139,12 +139,15 @@ public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, Firebas
         getRef(position).removeValue();
     }
 
+//    change our existing setIndexInFirebase() method so that we only ever set the index property
+// rather than reset the entire object:
     private void setIndexInFirebase() {
         for (Pet pet : mPets) {
             int index = mPets.indexOf(pet);
             DatabaseReference ref = getRef(index);
-            pet.setIndex(Integer.toString(index));
-            ref.setValue(pet);
+//            pet.setIndex(Integer.toString(index));
+//            ref.setValue(pet);
+            ref.child("index").setValue(Integer.toString(index));
         }
     }
 

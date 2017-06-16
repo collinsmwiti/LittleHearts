@@ -3,7 +3,10 @@ package com.example.collins.littlehearts.adapters;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +16,8 @@ import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
 import com.example.collins.littlehearts.util.ItemTouchHelperViewHolder;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import static com.example.collins.littlehearts.R.id.petImageView;
 
@@ -41,16 +46,29 @@ public class FirebasePetViewHolder extends RecyclerView.ViewHolder implements It
         TextView nameTextView = (TextView) mView.findViewById(R.id.petNameTextView);
         TextView animalTextView = (TextView) mView.findViewById(R.id.animalTextView);
         TextView lastUpdatedTextView = (TextView) mView.findViewById(R.id.lastUpdatedTextView);
-
-        Picasso.with(mContext)
-                .load(pet.getImageUrl())
-                .into(mPetImageView);
-
+        if (!pet.getImageUrl().contains("http")) {
+            try {
+                Bitmap imageBitmap = decodeFromFirebaseBase64(pet.getImageUrl());
+                mPetImageView.setImageBitmap(imageBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // This block of code should already exist, we're just moving it to the 'else' statement:
+            Picasso.with(mContext)
+                    .load(pet.getImageUrl())
+                    .into(mPetImageView);
+        }
             nameTextView.setText(pet.getBreeds().get(0));
             animalTextView.setText(pet.getAge());
             lastUpdatedTextView.setText("LastUpdated: " + pet.getLastUpdate());
     }
 
+//    method responsible for decoding Base64:
+public static Bitmap decodeFromFirebaseBase64(String image) throws IOException {
+    byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
+    return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+}
 //    @Override
 //    public void onClick(View view) {
 //        final ArrayList<Pet> pets = new ArrayList<>();
