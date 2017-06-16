@@ -23,6 +23,8 @@ import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -39,11 +41,17 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
     @Bind(R.id.savePetButton) TextView mSavePetButton;
 
     private Pet mPet;
+    private ArrayList<Pet> mPets;
+    private int mPosition;
 
-    public static PetDetailFragment newInstance(Pet pet) {
+
+
+    public static PetDetailFragment newInstance(ArrayList<Pet> pets, Integer position) {
         PetDetailFragment petDetailFragment = new PetDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("pet", Parcels.wrap(pet));
+        args.putParcelable(Constants.EXTRA_KEY_PETS, Parcels.wrap(pets));
+        args.putInt(Constants.EXTRA_KEY_POSITION, position);
+
         petDetailFragment.setArguments(args);
         return petDetailFragment;
     }
@@ -51,7 +59,9 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPet = Parcels.unwrap(getArguments().getParcelable("pet"));
+        mPets = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_KEY_PETS));
+        mPosition = getArguments().getInt(Constants.EXTRA_KEY_POSITION);
+        mPet = mPets.get(mPosition);
     }
 
 

@@ -2,6 +2,9 @@ package com.example.collins.littlehearts.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
 import com.example.collins.littlehearts.ui.PetDetailActivity;
+import com.example.collins.littlehearts.ui.PetDetailFragment;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -60,6 +65,7 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
         @Bind(R.id.lastUpdatedTextView) TextView mLastUpdatedTextView;
 
         private Context mContext;
+        private int mOrientation;
 
         public PetViewHolder(View itemView) {
             super(itemView);
@@ -67,17 +73,43 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
 
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
+
+            //Determines the current orientation of the device:
+            mOrientation = itemView.getResources().getConfiguration().orientation;
+
+            //Checks if the recorded orientation matches Android's landscape configuration/
+            //if so, we create a new DetailFragment to dispaly in our special landscape layout:
+            if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                createDetailFragment(0);
+            }
+        }
+
+        //Takes position of pet in list as parameter:
+        private void createDetailFragment(int position) {
+            // Creates new PetDetailFragment with the given position:
+            PetDetailFragment detailFragment = PetDetailFragment.newInstance(mPets, position);
+            //Gathers necessary components to replace the FrameLayout in the layout with the PetDetailFragment:
+            FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+            //Replaces the FrameLayout with the PetDetailFragment:
+            ft.replace(R.id.petDetailContainer, detailFragment);
+            //Commits these changes:
+            ft.commit();
         }
 
         @Override
         public void onClick(View v) {
 //            Log.d("click listener", "working!");
             int itemPosition = getLayoutPosition();
-            Intent intent = new Intent(mContext, PetDetailActivity.class);
-            intent.putExtra("position", itemPosition + "");
-            intent.putExtra("pets", Parcels.wrap(mPets));
-            mContext.startActivity(intent);
+            if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                createDetailFragment(itemPosition);
+            } else {
+                Intent intent = new Intent(mContext, PetDetailActivity.class);
+                intent.putExtra(Constants.EXTRA_KEY_POSITION, itemPosition);
+                intent.putExtra(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+                mContext.startActivity(intent);
+            }
         }
+
 
         public void bindPet(Pet pet) {
             Picasso.with(mContext).load(pet.getImageUrl()).into(mPetImageView);

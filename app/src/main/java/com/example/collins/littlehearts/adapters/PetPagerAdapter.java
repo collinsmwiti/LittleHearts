@@ -23,7 +23,7 @@ public class PetPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return PetDetailFragment.newInstance(mPets.get(position));
+        return PetDetailFragment.newInstance(mPets, position);
     }
 
     @Override

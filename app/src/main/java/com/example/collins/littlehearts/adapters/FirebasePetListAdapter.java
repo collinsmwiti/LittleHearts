@@ -2,12 +2,18 @@ package com.example.collins.littlehearts.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.collins.littlehearts.Constants;
+import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
 import com.example.collins.littlehearts.ui.PetDetailActivity;
+import com.example.collins.littlehearts.ui.PetDetailFragment;
 import com.example.collins.littlehearts.util.ItemTouchHelperAdapter;
 import com.example.collins.littlehearts.util.OnStartDragListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -30,17 +36,20 @@ import java.util.Collections;
 public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, FirebasePetViewHolder> implements ItemTouchHelperAdapter {
     private DatabaseReference mRef;
     private OnStartDragListener mOnStartDragListener;
-    private Context mContext;
     private ChildEventListener mChildEventListener;
+    private Context mContext;
     private ArrayList<Pet> mPets = new ArrayList<>();
+    private int mOrientation;
 
     public FirebasePetListAdapter(Class<Pet> modelClass, int modelLayout,
-                                  Class<FirebasePetViewHolder> viewHolderClass,
-                                  Query ref, OnStartDragListener onStartDragListener, Context context) {
+                                         Class<FirebasePetViewHolder> viewHolderClass,
+                                         Query ref, OnStartDragListener onStartDragListener, Context context) {
+
         super(modelClass, modelLayout, viewHolderClass, ref);
         mRef = ref.getRef();
         mOnStartDragListener = onStartDragListener;
         mContext = context;
+
         mChildEventListener = mRef.addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -68,13 +77,19 @@ public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, Firebas
 
             }
         });
-
     }
 
     @Override
     protected void populateViewHolder(final FirebasePetViewHolder viewHolder, Pet model, int position) {
         viewHolder.bindPet(model);
+
+        mOrientation = viewHolder.itemView.getResources().getConfiguration().orientation;
+        if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            createDetailFragment(0);
+        }
+
         viewHolder.mPetImageView.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
@@ -82,21 +97,34 @@ public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, Firebas
                 }
                 return false;
             }
+
         });
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, PetDetailActivity.class);
-                intent.putExtra("position", viewHolder.getAdapterPosition());
-                intent.putExtra("pets", Parcels.wrap(mPets));
-                mContext.startActivity(intent);
+                int itemPosition = viewHolder.getAdapterPosition();
+                if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    createDetailFragment(itemPosition);
+                } else {
+                    Intent intent = new Intent(mContext, PetDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, itemPosition);
+                    intent.putExtra(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+                    mContext.startActivity(intent);
+                }
             }
         });
+
     }
 
+    private void createDetailFragment(int position) {
+        PetDetailFragment detailFragment = PetDetailFragment.newInstance(mPets, position);
+        FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.petDetailContainer, detailFragment);
+        ft.commit();
+    }
 
-    //    We use Collections.swap() to update the order of our mPets ArrayList items passing in the ArrayList of items and the starting and ending positions.
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Collections.swap(mPets, fromPosition, toPosition);
@@ -104,7 +132,6 @@ public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, Firebas
         return false;
     }
 
-    //    We call the remove() method on our ArrayList of items in onItemDismiss() to remove the item from mPets at the given position.
     @Override
     public void onItemDismiss(int position) {
         mPets.remove(position);
@@ -126,7 +153,4 @@ public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, Firebas
         setIndexInFirebase();
         mRef.removeEventListener(mChildEventListener);
     }
-
 }
-
-
