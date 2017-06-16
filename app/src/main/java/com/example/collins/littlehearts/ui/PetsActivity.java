@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class PetsActivity extends AppCompatActivity implements OnPetSelectedListener {
     private Integer mPosition;
     ArrayList<Pet> mPets;
+    String mSource;
 //    private SharedPreferences mSharedPreferences;
 //    private SharedPreferences.Editor mEditor;
 //    private String mRecentAddress;
@@ -45,11 +46,13 @@ public class PetsActivity extends AppCompatActivity implements OnPetSelectedList
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 mPosition = savedInstanceState.getInt(Constants.EXTRA_KEY_POSITION);
                 mPets = Parcels.unwrap(savedInstanceState.getParcelable(Constants.EXTRA_KEY_PETS));
+                mSource = savedInstanceState.getString(Constants.KEY_SOURCE);
 
                 if (mPosition != null && mPets != null) {
                     Intent intent = new Intent(this, PetDetailActivity.class);
                     intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
                     intent.putExtra(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+                    intent.putExtra(Constants.KEY_SOURCE, mSource);
                     startActivity(intent);
                 }
 
@@ -67,6 +70,7 @@ public class PetsActivity extends AppCompatActivity implements OnPetSelectedList
         if (mPosition != null && mPets != null) {
             outState.putInt(Constants.EXTRA_KEY_POSITION, mPosition);
             outState.putParcelable(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+            outState.putString(Constants.KEY_SOURCE, mSource);
         }
 
     }
@@ -74,9 +78,11 @@ public class PetsActivity extends AppCompatActivity implements OnPetSelectedList
 
     //overriding onpetselectedlistener interface
     @Override
-    public void onPetSelected(Integer position, ArrayList<Pet> pets) {
+    public void onPetSelected(Integer position, ArrayList<Pet> pets, String source) {
         mPosition = position;
         mPets = pets;
+        mSource = source;
+
     }
 //        ButterKnife.bind(this);
 //

@@ -111,6 +111,7 @@ public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, Firebas
                     Intent intent = new Intent(mContext, PetDetailActivity.class);
                     intent.putExtra(Constants.EXTRA_KEY_POSITION, itemPosition);
                     intent.putExtra(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+                    intent.putExtra(Constants.KEY_SOURCE, Constants.SOURCE_SAVED);
                     mContext.startActivity(intent);
                 }
             }
@@ -119,7 +120,7 @@ public class FirebasePetListAdapter extends FirebaseRecyclerAdapter<Pet, Firebas
     }
 
     private void createDetailFragment(int position) {
-        PetDetailFragment detailFragment = PetDetailFragment.newInstance(mPets, position);
+        PetDetailFragment detailFragment = PetDetailFragment.newInstance(mPets, position, Constants.SOURCE_SAVED);
         FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.petDetailContainer, detailFragment);
         ft.commit();

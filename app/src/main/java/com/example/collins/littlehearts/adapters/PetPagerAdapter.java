@@ -15,15 +15,17 @@ import java.util.ArrayList;
 
 public class PetPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Pet> mPets;
+    private String mSource;
 
-    public PetPagerAdapter(FragmentManager fm, ArrayList<Pet> pets) {
+    public PetPagerAdapter(FragmentManager fm, ArrayList<Pet> pets, String source) {
         super(fm);
         mPets = pets;
+        mSource = source;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return PetDetailFragment.newInstance(mPets, position);
+        return PetDetailFragment.newInstance(mPets, position, mSource);
     }
 
     @Override

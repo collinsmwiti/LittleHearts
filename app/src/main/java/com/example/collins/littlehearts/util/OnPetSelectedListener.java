@@ -10,5 +10,5 @@ import java.util.ArrayList;
 
 //interface onpetselectedlistener
 public interface OnPetSelectedListener {
-    public void onPetSelected(Integer position, ArrayList<Pet> pets);
+    public void onPetSelected(Integer position, ArrayList<Pet> pets, String source);
 }

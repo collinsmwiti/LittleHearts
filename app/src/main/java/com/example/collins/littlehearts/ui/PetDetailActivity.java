@@ -21,6 +21,7 @@ public class PetDetailActivity extends AppCompatActivity {
     ViewPager mViewPager;
     private PetPagerAdapter adapterViewPager;
     ArrayList<Pet> mPets = new ArrayList<>();
+    private String mSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,9 @@ public class PetDetailActivity extends AppCompatActivity {
 
         mPets = Parcels.unwrap(getIntent().getParcelableExtra(Constants.EXTRA_KEY_PETS));
         int startingPosition =getIntent().getIntExtra(Constants.EXTRA_KEY_POSITION, 0);
+        mSource = getIntent().getStringExtra(Constants.KEY_SOURCE);
 
-        adapterViewPager = new PetPagerAdapter(getSupportFragmentManager(), mPets);
+        adapterViewPager = new PetPagerAdapter(getSupportFragmentManager(), mPets, mSource);
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
     }

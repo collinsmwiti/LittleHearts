@@ -94,7 +94,7 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
         //Takes position of pet in list as parameter:
         private void createDetailFragment(int position) {
             // Creates new PetDetailFragment with the given position:
-            PetDetailFragment detailFragment = PetDetailFragment.newInstance(mPets, position);
+            PetDetailFragment detailFragment = PetDetailFragment.newInstance(mPets, position, Constants.SOURCE_FIND);
             //Gathers necessary components to replace the FrameLayout in the layout with the PetDetailFragment:
             FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
             //Replaces the FrameLayout with the PetDetailFragment:
@@ -107,13 +107,14 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
         public void onClick(View v) {
 //            Log.d("click listener", "working!");
             int itemPosition = getLayoutPosition();
-            mPetSelectedListener.onPetSelected(itemPosition, mPets);
+//            mPetSelectedListener.onPetSelected(itemPosition, mPets, Constants.SOURCE_FIND);
             if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
                 createDetailFragment(itemPosition);
             } else {
                 Intent intent = new Intent(mContext, PetDetailActivity.class);
                 intent.putExtra(Constants.EXTRA_KEY_POSITION, itemPosition);
                 intent.putExtra(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+                intent.putExtra(Constants.KEY_SOURCE, Constants.SOURCE_FIND);
                 mContext.startActivity(intent);
             }
         }

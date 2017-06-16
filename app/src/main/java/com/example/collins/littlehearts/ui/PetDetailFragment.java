@@ -43,14 +43,16 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
     private Pet mPet;
     private ArrayList<Pet> mPets;
     private int mPosition;
+    private String mSource;
 
 
 
-    public static PetDetailFragment newInstance(ArrayList<Pet> pets, Integer position) {
+    public static PetDetailFragment newInstance(ArrayList<Pet> pets, Integer position, String source) {
         PetDetailFragment petDetailFragment = new PetDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(Constants.EXTRA_KEY_PETS, Parcels.wrap(pets));
         args.putInt(Constants.EXTRA_KEY_POSITION, position);
+        args.putString(Constants.KEY_SOURCE, source);
 
         petDetailFragment.setArguments(args);
         return petDetailFragment;
@@ -62,6 +64,8 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
         mPets = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_KEY_PETS));
         mPosition = getArguments().getInt(Constants.EXTRA_KEY_POSITION);
         mPet = mPets.get(mPosition);
+        mSource = getArguments().getString(Constants.KEY_SOURCE);
+        setHasOptionsMenu(true);
     }
 
 
@@ -71,21 +75,26 @@ public class PetDetailFragment extends Fragment implements View.OnClickListener 
         View view = inflater.inflate(R.layout.fragment_pet_detail, container, false);
         ButterKnife.bind(this, view);
 
-        Picasso.with(view.getContext())
-                .load(mPet.getImageUrl())
-                .into(mImageLabel);
 
-        mNameLabel.setText(android.text.TextUtils.join(", ", mPet.getBreeds()));
-        mAnimalLabel.setText(mPet.getAge());
-        mLastUpdatedLabel.setText("LastUpdated: " + mPet.getLastUpdate());
-        mPhoneLabel.setOnClickListener(this);
-        mEmailLabel.setOnClickListener(this);
+        if (mSource.equals(Constants.SOURCE_SAVED)) {
+            mSavePetButton.setVisibility(View.GONE);
+        } else {
+            Picasso.with(view.getContext())
+                    .load(mPet.getImageUrl())
+                    .into(mImageLabel);
 
-        //adding a listener to save pets button in order for the users to save their pets
-        mSavePetButton.setOnClickListener(this);
+            mNameLabel.setText(android.text.TextUtils.join(", ", mPet.getBreeds()));
+            mAnimalLabel.setText(mPet.getAge());
+            mLastUpdatedLabel.setText("LastUpdated: " + mPet.getLastUpdate());
+            mPhoneLabel.setOnClickListener(this);
+            mEmailLabel.setOnClickListener(this);
 
-        return view;
-    }
+            //adding a listener to save pets button in order for the users to save their pets
+            mSavePetButton.setOnClickListener(this);
+            }
+            return view;
+        }
+
 
     @Override
     public void onClick(View v) {
