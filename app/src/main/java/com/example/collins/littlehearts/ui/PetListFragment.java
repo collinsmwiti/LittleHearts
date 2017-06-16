@@ -1,6 +1,7 @@
 package com.example.collins.littlehearts.ui;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +22,7 @@ import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.adapters.PetListAdapter;
 import com.example.collins.littlehearts.models.Pet;
 import com.example.collins.littlehearts.services.PetFinderService;
+import com.example.collins.littlehearts.util.OnPetSelectedListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,9 +45,22 @@ public class PetListFragment extends Fragment {
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
     private String mRecentAddress;
+    private OnPetSelectedListener mOnPetSelectedListener;
 
     public PetListFragment() {
     }
+
+// In order to allow fragments and activities to communicate we need to capture an instance
+// of our interface and cast it into the context of the activities we need to communicate with.
+@Override
+public void onAttach(Context context) {
+    super.onAttach(context);
+    try {
+        mOnPetSelectedListener = (OnPetSelectedListener) context;
+    } catch (ClassCastException e) {
+        throw new ClassCastException(context.toString() + e.getMessage());
+    }
+}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +133,7 @@ public class PetListFragment extends Fragment {
 
                     @Override
                     public void run() {
-                        mAdapter = new PetListAdapter(getActivity(), mPets);
+                        mAdapter = new PetListAdapter(getActivity(), mPets, mOnPetSelectedListener);
                         mRecyclerView.setAdapter(mAdapter);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         mRecyclerView.setLayoutManager(layoutManager);

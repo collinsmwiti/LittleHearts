@@ -3,13 +3,24 @@ package com.example.collins.littlehearts.ui;
 
 //imports
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
+import com.example.collins.littlehearts.models.Pet;
+import com.example.collins.littlehearts.util.OnPetSelectedListener;
+
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 //class PetsActivity extending appcompat activity
-public class PetsActivity extends AppCompatActivity {
+public class PetsActivity extends AppCompatActivity implements OnPetSelectedListener {
+    private Integer mPosition;
+    ArrayList<Pet> mPets;
 //    private SharedPreferences mSharedPreferences;
 //    private SharedPreferences.Editor mEditor;
 //    private String mRecentAddress;
@@ -28,6 +39,45 @@ public class PetsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pets);
+
+        if (savedInstanceState != null) {
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                mPosition = savedInstanceState.getInt(Constants.EXTRA_KEY_POSITION);
+                mPets = Parcels.unwrap(savedInstanceState.getParcelable(Constants.EXTRA_KEY_PETS));
+
+                if (mPosition != null && mPets != null) {
+                    Intent intent = new Intent(this, PetDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
+                    intent.putExtra(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+                    startActivity(intent);
+                }
+
+            }
+
+        }
+
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mPosition != null && mPets != null) {
+            outState.putInt(Constants.EXTRA_KEY_POSITION, mPosition);
+            outState.putParcelable(Constants.EXTRA_KEY_PETS, Parcels.wrap(mPets));
+        }
+
+    }
+
+
+    //overriding onpetselectedlistener interface
+    @Override
+    public void onPetSelected(Integer position, ArrayList<Pet> pets) {
+        mPosition = position;
+        mPets = pets;
+    }
 //        ButterKnife.bind(this);
 //
 //        Intent intent = getIntent();
@@ -130,5 +180,5 @@ public class PetsActivity extends AppCompatActivity {
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        return super.onOptionsItemSelected(item);
 //    }
-    }
+
 }

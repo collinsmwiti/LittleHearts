@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.collins.littlehearts.Constants;
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.adapters.PetPagerAdapter;
 import com.example.collins.littlehearts.models.Pet;
@@ -27,9 +28,8 @@ public class PetDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pet_detail);
         ButterKnife.bind(this);
 
-        mPets = Parcels.unwrap(getIntent().getParcelableExtra("pets"));
-
-        int startingPosition = getIntent().getIntExtra("position", 0);
+        mPets = Parcels.unwrap(getIntent().getParcelableExtra(Constants.EXTRA_KEY_PETS));
+        int startingPosition =getIntent().getIntExtra(Constants.EXTRA_KEY_POSITION, 0);
 
         adapterViewPager = new PetPagerAdapter(getSupportFragmentManager(), mPets);
         mViewPager.setAdapter(adapterViewPager);

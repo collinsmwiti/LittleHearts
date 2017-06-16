@@ -17,6 +17,7 @@ import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
 import com.example.collins.littlehearts.ui.PetDetailActivity;
 import com.example.collins.littlehearts.ui.PetDetailFragment;
+import com.example.collins.littlehearts.util.OnPetSelectedListener;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -33,16 +34,18 @@ import butterknife.ButterKnife;
 public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewHolder> {
     private ArrayList<Pet> mPets = new ArrayList<>();
     private Context mContext;
+    private OnPetSelectedListener mOnPetSelectedListener;
 
-    public PetListAdapter(Context context, ArrayList<Pet> pets) {
+    public PetListAdapter(Context context, ArrayList<Pet> pets, OnPetSelectedListener petSelectedListener) {
         mContext = context;
         mPets = pets;
+        mOnPetSelectedListener = petSelectedListener;
     }
 
     @Override
     public PetListAdapter.PetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pet_list_item, parent, false);
-        PetViewHolder viewHolder = new PetViewHolder(view);
+        PetViewHolder viewHolder = new PetViewHolder(view, mPets, mOnPetSelectedListener);
         return viewHolder;
     }
 
@@ -66,8 +69,10 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
 
         private Context mContext;
         private int mOrientation;
+        private ArrayList<Pet> mPets = new ArrayList<>();
+        private OnPetSelectedListener mPetSelectedListener;
 
-        public PetViewHolder(View itemView) {
+        public PetViewHolder(View itemView, ArrayList<Pet> pets, OnPetSelectedListener petSelectedListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -76,6 +81,8 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
 
             //Determines the current orientation of the device:
             mOrientation = itemView.getResources().getConfiguration().orientation;
+            mPets = pets;
+            mOnPetSelectedListener = petSelectedListener;
 
             //Checks if the recorded orientation matches Android's landscape configuration/
             //if so, we create a new DetailFragment to dispaly in our special landscape layout:
@@ -100,6 +107,7 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.PetViewH
         public void onClick(View v) {
 //            Log.d("click listener", "working!");
             int itemPosition = getLayoutPosition();
+            mPetSelectedListener.onPetSelected(itemPosition, mPets);
             if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
                 createDetailFragment(itemPosition);
             } else {
