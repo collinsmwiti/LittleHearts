@@ -1,13 +1,17 @@
 package com.example.collins.littlehearts.adapters;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.collins.littlehearts.R;
 import com.example.collins.littlehearts.models.Pet;
+import com.example.collins.littlehearts.util.ItemTouchHelperViewHolder;
 import com.squareup.picasso.Picasso;
 
 import static com.example.collins.littlehearts.R.id.petImageView;
@@ -17,7 +21,7 @@ import static com.example.collins.littlehearts.R.id.petImageView;
  */
 
 //class firebasepetviewholder
-public class FirebasePetViewHolder extends RecyclerView.ViewHolder {
+public class FirebasePetViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
     View mView;
     Context mContext;
     public ImageView mPetImageView;
@@ -73,4 +77,23 @@ public class FirebasePetViewHolder extends RecyclerView.ViewHolder {
 //            }
 //        });
 //    }
+
+    //overriding the itemtouchhelperviewholder interface
+    @Override
+    public void onItemSelected() {
+        Log.d("Animation", "onItemSelected");
+        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(mContext,
+                R.animator.drag_scale_on);
+        set.setTarget(itemView);
+        set.start();
+    }
+
+    @Override
+    public void onItemClear() {
+        Log.d("Animation", "onItemClear");
+        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(mContext,
+                R.animator.drag_scale_off);
+        set.setTarget(itemView);
+        set.start();
+    }
 }
